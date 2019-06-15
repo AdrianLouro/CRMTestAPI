@@ -13,9 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExceptionMiddleware", "Exce
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{EC9E333A-D375-427A-A903-14067FC2BE0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{AC1B6B0B-9772-47E1-9072-FDF05CCA20E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{AC1B6B0B-9772-47E1-9072-FDF05CCA20E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Integration", "Integration\Integration.csproj", "{B723062B-209B-44B2-999B-0207793F0A52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Integration", "Integration\Integration.csproj", "{B723062B-209B-44B2-999B-0207793F0A52}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories", "Repositories\Repositories.csproj", "{B67E7F90-5837-4AB0-A4A6-B8281FD8E10B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{B723062B-209B-44B2-999B-0207793F0A52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B723062B-209B-44B2-999B-0207793F0A52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B723062B-209B-44B2-999B-0207793F0A52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B67E7F90-5837-4AB0-A4A6-B8281FD8E10B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B67E7F90-5837-4AB0-A4A6-B8281FD8E10B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B67E7F90-5837-4AB0-A4A6-B8281FD8E10B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B67E7F90-5837-4AB0-A4A6-B8281FD8E10B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,3 @@
-using Entities.Models;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -12,6 +11,8 @@ namespace Integration.CRMTestAPI.Controllers
     public class UsersController_
     {
         private readonly TestContext _context;
+        private readonly Guid ADMIN_ID = Guid.Parse("11111111-1111-1111-1111-111111111111");
+        private readonly Guid NON_ADMIN_ID = Guid.Parse("22222222-2222-2222-2222-222222222222");
 
         public UsersController_()
         {
@@ -30,7 +31,7 @@ namespace Integration.CRMTestAPI.Controllers
         [Fact]
         public async Task returns_ok_response_when_getting_user_with_valid_id()
         {
-            var response = await _context.Client.GetAsync($"/users/{Guid.NewGuid()}");
+            var response = await _context.Client.GetAsync($"/users/{ADMIN_ID}");
             response.EnsureSuccessStatusCode();
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -47,7 +48,8 @@ namespace Integration.CRMTestAPI.Controllers
         [Fact]
         public async Task returns_created_response_when_creating_new_user_with_valid_data()
         {
-            StringContent postData =  new StringContent("{\"name\":\"John\",\"surname\":\"Doe\"}", Encoding.UTF8, "application/json");
+            StringContent postData = new StringContent("{\"name\":\"John\",\"surname\":\"Doe\"}", Encoding.UTF8,
+                "application/json");
             var response = await _context.Client.PostAsync("/users", postData);
             response.EnsureSuccessStatusCode();
 
@@ -66,7 +68,8 @@ namespace Integration.CRMTestAPI.Controllers
         [Fact]
         public async Task returns_created_user_when_creating_new_user_with_valid_data()
         {
-            StringContent postData = new StringContent("{\"name\":\"John\",\"surname\":\"Doe\"}", Encoding.UTF8, "application/json");
+            StringContent postData = new StringContent("{\"name\":\"John\",\"surname\":\"Doe\"}", Encoding.UTF8,
+                "application/json");
             var response = await _context.Client.PostAsync("/users", postData);
             response.EnsureSuccessStatusCode();
 
@@ -80,7 +83,8 @@ namespace Integration.CRMTestAPI.Controllers
         [Fact]
         public async Task returns_bad_request_response_when_editing_user_with_bad_formatted_id()
         {
-            StringContent postData = new StringContent("{\"name\":\"John\",\"surname\":\"Doe\"}", Encoding.UTF8, "application/json");
+            StringContent postData = new StringContent("{\"name\":\"John\",\"surname\":\"Doe\"}", Encoding.UTF8,
+                "application/json");
             var response = await _context.Client.PutAsync("/users/1", postData);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -89,8 +93,9 @@ namespace Integration.CRMTestAPI.Controllers
         [Fact]
         public async Task returns_no_content_response_when_editing_user_with_valid_data()
         {
-            StringContent postData = new StringContent("{\"name\":\"John\",\"surname\":\"Doe\"}", Encoding.UTF8, "application/json");
-            var response = await _context.Client.PutAsync($"/users/{Guid.NewGuid()}", postData);
+            StringContent postData = new StringContent("{\"name\":\"John\",\"surname\":\"Doe\"}", Encoding.UTF8,
+                "application/json");
+            var response = await _context.Client.PutAsync($"/users/{ADMIN_ID}", postData);
             response.EnsureSuccessStatusCode();
 
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
@@ -100,7 +105,7 @@ namespace Integration.CRMTestAPI.Controllers
         public async Task returns_bad_request_response_when_editing_user_with_invalid_data()
         {
             StringContent postData = new StringContent("{\"name\":\"John\"", Encoding.UTF8, "application/json");
-            var response = await _context.Client.PutAsync($"/users/{Guid.NewGuid()}", postData);
+            var response = await _context.Client.PutAsync($"/users/{NON_ADMIN_ID}", postData);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
@@ -108,7 +113,7 @@ namespace Integration.CRMTestAPI.Controllers
         [Fact]
         public async Task returns_no_content_response_when_deleting_user_with_valid_id()
         {
-            var response = await _context.Client.DeleteAsync($"/users/{Guid.NewGuid()}");
+            var response = await _context.Client.DeleteAsync($"/users/{NON_ADMIN_ID}");
             response.EnsureSuccessStatusCode();
 
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);

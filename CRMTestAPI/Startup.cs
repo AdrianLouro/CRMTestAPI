@@ -25,6 +25,8 @@ namespace CRMTestAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureLoggerService();
+            services.ConfigureDatabaseContext(Configuration);
+            services.ConfigureRepositoryWrapper();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
