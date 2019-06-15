@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace CustomExceptionMiddleware.Models
+namespace ExceptionMiddleware.Models
 {
     public class ErrorDetails
     {

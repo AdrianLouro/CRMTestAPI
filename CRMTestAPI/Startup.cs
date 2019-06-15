@@ -2,7 +2,6 @@
 using System.IO;
 using Contracts;
 using CRMTestAPI.Extensions;
-using CustomExceptionMiddleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -42,8 +41,7 @@ namespace CRMTestAPI
                 app.UseHsts();
             }
 
-            app.UseMiddleware<ExceptionMiddleware>();
-
+            app.UseMiddleware<ExceptionMiddleware.ExceptionMiddleware>();
             app.UseHttpsRedirection();
             app.UseMvc();
         }

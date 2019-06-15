@@ -2,10 +2,10 @@
 using System.Net;
 using System.Threading.Tasks;
 using Contracts;
-using CustomExceptionMiddleware.Models;
+using ExceptionMiddleware.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace CustomExceptionMiddleware
+namespace ExceptionMiddleware
 {
     public class ExceptionMiddleware
     {
