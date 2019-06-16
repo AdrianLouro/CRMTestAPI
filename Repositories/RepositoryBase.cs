@@ -9,44 +9,44 @@ namespace Repositories
 {
     public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
-        protected RepositoryContext RepositoryContext { get; set; }
+        protected AppDbContext DbContext { get; set; }
 
-        public RepositoryBase(RepositoryContext repositoryContext)
+        public RepositoryBase(AppDbContext dbContext)
         {
-            RepositoryContext = repositoryContext;
+            DbContext = dbContext;
         }
 
         public IQueryable<T> FindAll()
         {
-            return RepositoryContext.Set<T>()
+            return DbContext.Set<T>()
                 .AsNoTracking();
         }
 
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression)
         {
-            return RepositoryContext.Set<T>()
+            return DbContext.Set<T>()
                 .Where(expression)
                 .AsNoTracking();
         }
 
         public void Create(T entity)
         {
-            RepositoryContext.Set<T>().Add(entity);
+            DbContext.Set<T>().Add(entity);
         }
 
         public void Update(T entity)
         {
-            RepositoryContext.Set<T>().Update(entity);
+            DbContext.Set<T>().Update(entity);
         }
 
         public void Delete(T entity)
         {
-            RepositoryContext.Set<T>().Remove(entity);
+            DbContext.Set<T>().Remove(entity);
         }
 
         public void Save()
         {
-            RepositoryContext.SaveChanges();
+            DbContext.SaveChanges();
         }
     }
 }

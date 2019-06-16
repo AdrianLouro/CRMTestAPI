@@ -5,14 +5,14 @@ namespace Repositories
 {
     public class RepositoryWrapper : IRepositoryWrapper
     {
-        private RepositoryContext _repositoryContext;
+        private AppDbContext _dbContext;
         private IUserRepository _user;
 
-        public RepositoryWrapper(RepositoryContext repositoryContext)
+        public RepositoryWrapper(AppDbContext dbContext)
         {
-            _repositoryContext = repositoryContext;
+            _dbContext = dbContext;
         }
 
-        public IUserRepository User => _user ?? (_user = new UserRepository(_repositoryContext));
+        public IUserRepository User => _user ?? (_user = new UserRepository(_dbContext));
     }
 }

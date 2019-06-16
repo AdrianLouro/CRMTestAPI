@@ -16,6 +16,11 @@ namespace Entities.Models
         public string Type { get; set; }
 
         [JsonIgnore]
+        [Column("user")]
+        [Required(ErrorMessage = "User ID is required")]
+        public Guid UserId { get; set; }
+
+        [JsonIgnore]
         public virtual User User { get; set; }
     }
 }

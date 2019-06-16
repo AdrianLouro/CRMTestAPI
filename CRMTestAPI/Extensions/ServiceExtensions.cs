@@ -17,7 +17,7 @@ namespace CRMTestAPI.Extensions
 
         public static void ConfigureDatabaseContext(this IServiceCollection services, IConfiguration config)
         {
-            services.AddDbContext<RepositoryContext>(o => o.UseMySql(config["mysqlconnection:connectionString"]));
+            services.AddDbContext<AppDbContext>(o => o.UseMySql(config["mysqlconnection:connectionString"]));
         }
 
         public static void ConfigureRepositoryWrapper(this IServiceCollection services)
