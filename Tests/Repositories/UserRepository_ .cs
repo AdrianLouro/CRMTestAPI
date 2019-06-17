@@ -29,6 +29,23 @@ namespace Tests.Repositories
             Assert.Equal(Guid.Parse("11111111-1111-1111-1111-111111111111"), _userRepository.FindAll().ElementAt(0).Id);
         }
 
+        [Fact]
+        public void does_not_fetch_user_with_roles_by_not_existing_email()
+        {
+            var user = _userRepository.FindWithRolesByEmail("fake@mail.es");
+            Assert.Null(user);
+        }
+
+        [Fact]
+        public void fetches_user_with_roles_by_existing_email()
+        {
+            var user = _userRepository.FindWithRolesByEmail("admin@admin.es");
+            Assert.IsType<User>(user);
+            Assert.Equal(Guid.Parse("11111111-1111-1111-1111-111111111111"), user.Id);
+            Assert.Single(user.Roles);
+            Assert.Equal(Guid.Parse("11111111-1111-1111-1111-111111111111"), user.Roles.First().Id);
+        }
+
         private void SetUpUsers()
         {
             _users = new List<User>()
@@ -36,12 +53,24 @@ namespace Tests.Repositories
                 new User()
                 {
                     Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
+                    Email = "admin@admin.es",
+                    Password = "password",
                     Name = "John",
-                    Surname = "Admin Doe"
+                    Surname = "Admin Doe",
+                    Roles = new List<Role>()
+                    {
+                        new Role()
+                        {
+                            Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
+                            Type = "admin",
+                        }
+                    }
                 },
                 new User()
                 {
                     Id = Guid.Parse("22222222-2222-2222-2222-222222222222"),
+                    Email = "user@user.es",
+                    Password = "password",
                     Name = "John",
                     Surname = "Doe"
                 }

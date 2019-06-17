@@ -3,6 +3,7 @@ using System.Linq;
 using Contracts;
 using Entities.Extensions;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CRMTestAPI.Controllers
@@ -20,19 +21,19 @@ namespace CRMTestAPI.Controllers
             _repositories = repositories;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "admin")]
         public IActionResult GetAll()
         {
             return Ok(_repositories.User.FindAll());
         }
 
-        [HttpGet("{id}", Name = "GetUserById")]
+        [HttpGet("{id}", Name = "GetUserById"), Authorize(Roles = "admin")]
         public IActionResult GetById(Guid id)
         {
             return Ok(_repositories.User.FindByCondition(user => user.Id.Equals(id)).FirstOrDefault());
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "admin")]
         public IActionResult Post([FromBody] User user)
         {
             user.Id = Guid.NewGuid();
@@ -41,7 +42,7 @@ namespace CRMTestAPI.Controllers
             return CreatedAtRoute("GetUserById", new {id = user.Id}, user);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "admin")]
         public IActionResult Put(Guid id, [FromBody] User user)
         {
             User dbUser = _repositories.User.FindByCondition(u => u.Id.Equals(id)).FirstOrDefault();
@@ -51,7 +52,7 @@ namespace CRMTestAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "admin")]
         public IActionResult Delete(Guid id)
         {
             User user = _repositories.User.FindByCondition(u => u.Id.Equals(id)).FirstOrDefault();

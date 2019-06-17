@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Contracts;
 using CRMTestAPI.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NLog;
+using static System.String;
 
 namespace CRMTestAPI
 {
@@ -15,7 +15,7 @@ namespace CRMTestAPI
     {
         public Startup(IConfiguration configuration)
         {
-            LogManager.LoadConfiguration(String.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
+            LogManager.LoadConfiguration(Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
             Configuration = configuration;
         }
 
@@ -24,9 +24,11 @@ namespace CRMTestAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.ConfigureConfig(Configuration);
             services.ConfigureLoggerService();
             services.ConfigureDatabaseContext(Configuration);
             services.ConfigureRepositoryWrapper();
+            services.ConfigureAuthenticationService(Configuration);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -43,6 +45,7 @@ namespace CRMTestAPI
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
             app.UseMiddleware<ExceptionMiddleware.ExceptionMiddleware>();
             app.UseHttpsRedirection();
             app.UseMvc();
