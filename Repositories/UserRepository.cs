@@ -18,9 +18,21 @@ namespace Repositories
             return FindByCondition(user => user.Id.Equals(id)).FirstOrDefault();
         }
 
+        public User FindByEmail(string email)
+        {
+            return FindByCondition(user => user.Email.Equals(email)).AsNoTracking().FirstOrDefault();
+        }
+
         public User FindWithRolesByEmail(string email)
         {
             return FindByCondition(user => user.Email.Equals(email)).AsNoTracking()
+                .Include(user => user.Roles)
+                .FirstOrDefault();
+        }
+
+        public User FindWithRolesById(Guid id)
+        {
+            return FindByCondition(user => user.Id.Equals(id)).AsNoTracking()
                 .Include(user => user.Roles)
                 .FirstOrDefault();
         }

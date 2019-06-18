@@ -7,6 +7,7 @@ namespace Repositories
     {
         private AppDbContext _dbContext;
         private IUserRepository _user;
+        private IRoleRepository _role;
 
         public RepositoryWrapper(AppDbContext dbContext)
         {
@@ -14,5 +15,7 @@ namespace Repositories
         }
 
         public IUserRepository User => _user ?? (_user = new UserRepository(_dbContext));
+
+        public IRoleRepository Role => _role ?? (_role = new RoleRepository(_dbContext));
     }
 }

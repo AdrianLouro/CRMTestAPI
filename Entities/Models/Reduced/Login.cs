@@ -1,13 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using Entities;
 
-namespace Entities.Models
+namespace Entities.Models.Reduced
 {
-    public class LoginModel : IEntity
+    public class Login
     {
-        public Guid Id { get; set; }
-
         [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
 

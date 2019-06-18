@@ -15,7 +15,6 @@ namespace Entities.Models
         [StringLength(50, ErrorMessage = "Type can't be longer than 50 characters")]
         public string Type { get; set; }
 
-        [JsonIgnore]
         [Column("user")]
         [Required(ErrorMessage = "User ID is required")]
         public Guid UserId { get; set; }

@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Entities.Extensions;
 using Entities.Models;
+using Entities.Models.Reduced;
 using Xunit;
 
 namespace Tests.Entities.Models
@@ -20,13 +22,13 @@ namespace Tests.Entities.Models
             {
                 Id = Guid.NewGuid()
             };
-            
+
 
             Assert.NotEqual(newUser.Id, user.Id);
         }
 
         [Fact]
-        public void maps_user_fields()
+        public void maps_user_profile_fields()
         {
             User user = new User
             {
@@ -36,9 +38,8 @@ namespace Tests.Entities.Models
             };
             user.Roles.Concat(new[] {new Role()});
 
-            User newUser = new User
+            UserProfile newUser = new UserProfile
             {
-                Id = Guid.NewGuid(),
                 Name = "NewJohn",
                 Surname = "NewDoe"
             };
@@ -47,7 +48,6 @@ namespace Tests.Entities.Models
 
             Assert.Equal(newUser.Name, user.Name);
             Assert.Equal(newUser.Surname, user.Surname);
-            Assert.Equal(newUser.Roles, user.Roles);
         }
     }
 }

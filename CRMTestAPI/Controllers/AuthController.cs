@@ -8,6 +8,7 @@ using Contracts;
 using CryptoHelper;
 using CRMTestAPI;
 using Entities.Models;
+using Entities.Models.Reduced;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -28,7 +29,7 @@ namespace PrematureKidsAPI.Controllers
         }
 
         [HttpPost, Route("login")]
-        public IActionResult Login([FromBody] LoginModel user)
+        public IActionResult Login([FromBody] Login user)
         {
             User dbUser = _repository.User.FindWithRolesByEmail(user.Email);
 
@@ -37,7 +38,7 @@ namespace PrematureKidsAPI.Controllers
             return Ok(new {Token = new JwtSecurityTokenHandler().WriteToken(GetJwtSecurityToken(dbUser))});
         }
 
-        private bool UserDoesNotExist(LoginModel user, User dbUser)
+        private bool UserDoesNotExist(Login user, User dbUser)
         {
             return dbUser == null || (dbUser != null && !Crypto.VerifyHashedPassword(dbUser.Password, user.Password));
         }

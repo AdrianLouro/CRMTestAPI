@@ -30,6 +30,22 @@ namespace Tests.Repositories
         }
 
         [Fact]
+        public void does_not_fetch_user_by_not_existing_email()
+        {
+            var user = _userRepository.FindByEmail("fake@mail.es");
+            Assert.Null(user);
+        }
+
+        [Fact]
+        public void fetches_user_by_existing_email()
+        {
+            var user = _userRepository.FindByEmail("admin@admin.es");
+            Assert.IsType<User>(user);
+            Assert.Equal(Guid.Parse("11111111-1111-1111-1111-111111111111"), user.Id);
+
+        }
+
+        [Fact]
         public void does_not_fetch_user_with_roles_by_not_existing_email()
         {
             var user = _userRepository.FindWithRolesByEmail("fake@mail.es");

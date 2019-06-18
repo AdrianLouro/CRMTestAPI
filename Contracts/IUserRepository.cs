@@ -7,6 +7,10 @@ namespace Contracts
     {
         User FindById(Guid id);
 
+        User FindByEmail(string email);
+
         User FindWithRolesByEmail(string email);
+
+        User FindWithRolesById(Guid id);
     }
 }

@@ -21,6 +21,7 @@ CREATE TABLE crmtestapi.role(
 	type VARCHAR(50) NOT NULL,
 	user VARCHAR(36) NOT NULL,
 	PRIMARY KEY(id),
+	UNIQUE(type, user),
 	FOREIGN KEY(user) REFERENCES user(id) ON DELETE CASCADE
 );
 
