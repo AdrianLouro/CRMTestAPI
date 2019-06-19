@@ -1,8 +1,9 @@
 ﻿using System.IO;
-using Contracts;
 using CRMTestAPI.Extensions;
+using LoggerService.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,11 +25,13 @@ namespace CRMTestAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.ConfigureCors();
             services.ConfigureConfig(Configuration);
             services.ConfigureLoggerService();
             services.ConfigureDatabaseContext(Configuration);
             services.ConfigureRepositoryWrapper();
             services.ConfigureAuthenticationService(Configuration);
+            services.ConfigureActionFilters();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -44,6 +47,12 @@ namespace CRMTestAPI
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseCors("CorsPolicy");
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.All
+            });
 
             app.UseAuthentication();
             app.UseMiddleware<ExceptionMiddleware.ExceptionMiddleware>();

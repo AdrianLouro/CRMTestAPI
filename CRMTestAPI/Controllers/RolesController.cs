@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Linq;
-using Contracts;
-using CryptoHelper;
+using ActionFilters;
 using Entities.Extensions;
 using Entities.Models;
-using Entities.Models.Reduced;
+using LoggerService.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Repositories.Contracts;
 
 namespace CRMTestAPI.Controllers
 {
@@ -26,12 +25,14 @@ namespace CRMTestAPI.Controllers
 
 
         [HttpGet("{id}", Name = "GetRoleById"), Authorize(Roles = "admin")]
+        [ServiceFilter(typeof(EntityExistsActionFilter<Role>))]
         public IActionResult GetById(Guid id)
         {
-            return Ok(_repositories.Role.FindById(id));
+            return Ok(HttpContext.Items["entity"]);
         }
 
         [HttpPost, Authorize(Roles = "admin")]
+        [ServiceFilter(typeof(EntityIsValidActionFilter))]
         public IActionResult Post([FromBody] Role role)
         {
             if (_repositories.User.FindById(role.UserId).IsNull())
@@ -45,7 +46,7 @@ namespace CRMTestAPI.Controllers
             {
                 var error = new ModelStateDictionary();
                 error.AddModelError("Type", "Already found role type for given user.");
-                return NotFound(error);
+                return Conflict(error);
             }
 
             _repositories.Role.Create(role);
@@ -54,9 +55,10 @@ namespace CRMTestAPI.Controllers
         }
 
         [HttpDelete("{id}"), Authorize(Roles = "admin")]
+        [ServiceFilter(typeof(EntityExistsActionFilter<Role>))]
         public IActionResult Delete(Guid id)
         {
-            _repositories.Role.Delete(_repositories.Role.FindById(id));
+            _repositories.Role.Delete(HttpContext.Items["entity"] as Role);
             _repositories.Role.Save();
             return NoContent();
         }

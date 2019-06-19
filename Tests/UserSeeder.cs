@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using Contracts;
 using Entities;
 using Entities.Models;
+using Tests.Contracts;
 
 namespace Tests
 {

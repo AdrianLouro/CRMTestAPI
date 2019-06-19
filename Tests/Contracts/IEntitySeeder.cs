@@ -1,4 +1,4 @@
-﻿namespace Contracts
+﻿namespace Tests.Contracts
 {
     public interface IEntitySeeder
     {

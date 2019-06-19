@@ -1,7 +1,7 @@
 ﻿using System;
 using Entities.Models;
 
-namespace Contracts
+namespace Repositories.Contracts
 {
     public interface IRoleRepository : IRepositoryBase<Role>
     {

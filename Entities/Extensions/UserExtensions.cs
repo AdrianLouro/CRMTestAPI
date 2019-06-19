@@ -12,5 +12,17 @@ namespace Entities.Extensions
             dbUser.Name = user.Name;
             dbUser.Surname = user.Surname;
         }
+
+        public static ReducedUser ToReducedUser(this User user)
+        {
+            return new ReducedUser()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Name = user.Name,
+                Surname = user.Surname,
+                Roles = user.Roles
+            };
+        }
     }
 }

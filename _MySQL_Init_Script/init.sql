@@ -25,6 +25,18 @@ CREATE TABLE crmtestapi.role(
 	FOREIGN KEY(user) REFERENCES user(id) ON DELETE CASCADE
 );
 
+CREATE TABLE crmtestapi.customer(
+	id VARCHAR(36),
+	name VARCHAR(100) NOT NULL,
+	surname VARCHAR(100) NOT NULL,
+	photo_extension VARCHAR(10),
+	created_by VARCHAR(36) NOT NULL,
+	last_updated_by VARCHAR(36),
+	PRIMARY KEY(id),
+	FOREIGN KEY(created_by) REFERENCES user(id) ON DELETE CASCADE, -- ¿ON DELETE?
+	FOREIGN KEY(last_updated_by) REFERENCES user(id) ON DELETE CASCADE -- ¿ON DELETE?
+);
+
 -- -----------------------------------------------------------------
 
 INSERT INTO `crmtestapi`.`user` (`id`, `email`, `password`, `name`, `surname`) VALUES 
@@ -33,3 +45,7 @@ INSERT INTO `crmtestapi`.`user` (`id`, `email`, `password`, `name`, `surname`) V
 
 INSERT INTO `crmtestapi`.`role` (`id`, `type`, `user`) VALUES 
 	('11111111-1111-1111-1111-111111111111', 'admin', '11111111-1111-1111-1111-111111111111');
+	
+INSERT INTO `crmtestapi`.`customer` (`id`, `name`, `surname`, `photo_extension`, `created_by`, `last_updated_by`) VALUES 
+	('11111111-1111-1111-1111-111111111111', 'John', 'Doe', 'jpg', '11111111-1111-1111-1111-111111111111', '11111111-1111-1111-1111-111111111111'),
+	('22222222-2222-2222-2222-222222222222', 'John', 'Doe The Second', 'png', '22222222-2222-2222-2222-222222222222', NULL);

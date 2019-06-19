@@ -1,5 +1,5 @@
-﻿using Contracts;
-using Entities;
+﻿using Entities;
+using Repositories.Contracts;
 
 namespace Repositories
 {

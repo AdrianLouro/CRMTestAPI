@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Linq;
-using Contracts;
+using ActionFilters;
 using CryptoHelper;
 using Entities.Extensions;
 using Entities.Models;
 using Entities.Models.Reduced;
+using LoggerService.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
+using Repositories.Contracts;
 
 namespace CRMTestAPI.Controllers
 {
@@ -27,16 +30,19 @@ namespace CRMTestAPI.Controllers
         [HttpGet, Authorize(Roles = "admin")]
         public IActionResult GetAll()
         {
-            return Ok(_repositories.User.FindAll());
+            return Ok(_repositories.User.FindAll().Include(user => user.Roles).Select(user => user.ToReducedUser()));
         }
 
         [HttpGet("{id}", Name = "GetUserById"), Authorize(Roles = "admin")]
+        [ServiceFilter(typeof(EntityExistsActionFilter<User>))]
         public IActionResult GetById(Guid id)
         {
-            return Ok(_repositories.User.FindWithRolesById(id));
+            //return Ok((HttpContext.Items["entity"] as User).ToReducedUser());
+            return Ok(_repositories.User.FindWithRolesById(id).ToReducedUser());
         }
 
         [HttpPost, Authorize(Roles = "admin")]
+        [ServiceFilter(typeof(EntityIsValidActionFilter))]
         public IActionResult Post([FromBody] User user)
         {
             User dbUser = _repositories.User.FindByEmail(user.Email);
@@ -54,20 +60,21 @@ namespace CRMTestAPI.Controllers
         }
 
         [HttpPut("{id}"), Authorize(Roles = "admin")]
+        [ServiceFilter(typeof(EntityExistsActionFilter<User>))]
+        [ServiceFilter(typeof(EntityIsValidActionFilter))]
         public IActionResult Put([FromBody] UserProfile user, Guid id)
         {
-            User dbUser = _repositories.User.FindByCondition(u => u.Id.Equals(id)).FirstOrDefault();
-            dbUser.Map(user);
-            _repositories.User.Update(dbUser);
+            (HttpContext.Items["entity"] as User).Map(user);
+            _repositories.User.Update(HttpContext.Items["entity"] as User);
             _repositories.User.Save();
             return NoContent();
         }
 
         [HttpDelete("{id}"), Authorize(Roles = "admin")]
+        [ServiceFilter(typeof(EntityExistsActionFilter<User>))]
         public IActionResult Delete(Guid id)
         {
-            User user = _repositories.User.FindByCondition(u => u.Id.Equals(id)).FirstOrDefault();
-            _repositories.User.Delete(user);
+            _repositories.User.Delete(HttpContext.Items["entity"] as User);
             _repositories.User.Save();
             return NoContent();
         }

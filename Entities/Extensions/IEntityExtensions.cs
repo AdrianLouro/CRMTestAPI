@@ -1,4 +1,5 @@
 ﻿using System;
+using Entities.Contracts;
 
 namespace Entities.Extensions
 {

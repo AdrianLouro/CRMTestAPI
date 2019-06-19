@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Entities.Contracts;
 
 namespace Entities.Models.Reduced
 {
-    public class ReducedUser : IEntity
+    public class ReducedUser : IEntity, IEntityModel
     {
         [Required]
         public Guid Id { get; set; }

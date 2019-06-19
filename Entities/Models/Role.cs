@@ -1,12 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Entities.Contracts;
 using Newtonsoft.Json;
 
 namespace Entities.Models
 {
     [Table("role")]
-    public class Role : IEntity
+    public class Role : IEntity, IEntityModel
     {
         [Key] [Column("id")] public Guid Id { get; set; }
 

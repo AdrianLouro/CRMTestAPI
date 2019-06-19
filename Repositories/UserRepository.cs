@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using Contracts;
 using Entities;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Repositories.Contracts;
 
 namespace Repositories
 {

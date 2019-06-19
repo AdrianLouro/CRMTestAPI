@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Entities
+namespace Entities.Contracts
 {
     public interface IEntity
     {

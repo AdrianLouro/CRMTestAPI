@@ -1,9 +1,9 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using Entities.Contracts;
 
 namespace Entities.Models.Reduced
 {
-    public class UserProfile
+    public class UserProfile: IEntityModel
     {
         [Required(ErrorMessage = "Name is required")]
         [StringLength(100, ErrorMessage = "Name can't be longer than 100 characters")]

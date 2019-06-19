@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
-using Contracts;
 using ExceptionMiddleware.Models;
+using LoggerService.Contracts;
 using Microsoft.AspNetCore.Http;
 
 namespace ExceptionMiddleware
