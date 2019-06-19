@@ -1,27 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Entities.Contracts;
 
 namespace Entities.Models
 {
-    [Table("user")]
-    public class User : IEntity, IEntityModel
+    [Table("customer")]
+    public class Customer : IEntity, IEntityModel
     {
         [Key]
         [Column("id")]
         public Guid Id { get; set; }
-
-        [Column("email")]
-        [Required(ErrorMessage = "Email is required")]
-        [StringLength(50, ErrorMessage = "Email can't be longer than 50 characters")]
-        public string Email { get; set; }
-
-        [Column("password")]
-        [Required(ErrorMessage = "Password is required")]
-        [StringLength(100, ErrorMessage = "Password can't be longer than 100 characters")]
-        public string Password { get; set; }
 
         [Column("name")]
         [Required(ErrorMessage = "Name is required")]
@@ -33,6 +22,18 @@ namespace Entities.Models
         [StringLength(100, ErrorMessage = "Surname can't be longer than 100 characters")]
         public string Surname { get; set; }
 
-        public virtual ICollection<Role> Roles { get; set; } = new List<Role>();
+        [Column("photo_extension")]
+        [StringLength(10, ErrorMessage = "Photo extension can't be longer than 10 characters")]
+        public string PhotoExtension { get; set; }
+
+        [Column("created_by")]
+        public Guid CreatedById { get; set; }
+
+        public virtual User CreatedBy { get; set; }
+
+        [Column("last_updated_by")]
+        public Guid LastUpdatedById { get; set; }
+
+        public virtual User LastUpdatedBy { get; set; }
     }
 }

@@ -71,6 +71,7 @@ namespace CRMTestAPI.Extensions
             services.AddScoped<EntityIsValidActionFilter>();
             services.AddScoped<EntityExistsActionFilter<User>>();
             services.AddScoped<EntityExistsActionFilter<Role>>();
+            services.AddScoped<EntityExistsActionFilter<Customer>>();
         }
     }
 }
