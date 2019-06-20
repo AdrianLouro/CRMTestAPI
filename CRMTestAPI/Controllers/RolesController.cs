@@ -58,7 +58,7 @@ namespace CRMTestAPI.Controllers
         [ServiceFilter(typeof(EntityExistsActionFilter<Role>))]
         public IActionResult Delete(Guid id)
         {
-            _repositories.Role.Delete(HttpContext.Items["entity"] as Role);
+            _repositories.Role.Delete((Role) HttpContext.Items["entity"]);
             _repositories.Role.Save();
             return NoContent();
         }

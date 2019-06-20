@@ -21,7 +21,7 @@ namespace ActionFilters
             Guid id = Guid.Empty;
             if (context.ActionArguments.ContainsKey("id"))
             {
-                id = (Guid)context.ActionArguments["id"];
+                id = (Guid) context.ActionArguments["id"];
             }
             else
             {
@@ -29,7 +29,13 @@ namespace ActionFilters
                 return;
             }
 
-            var entity = _dbContext.Set<T>().SingleOrDefault(x => x.Id.Equals(id));
+            var entity = _dbContext.Set<T>().SingleOrDefault(
+                x =>
+                    x is IRemoveAware
+                        ? x.Id.Equals(id) && !((IRemoveAware) x).IsDeleted()
+                        : x.Id.Equals(id)
+            );
+
             if (entity == null)
             {
                 context.Result = new NotFoundResult();

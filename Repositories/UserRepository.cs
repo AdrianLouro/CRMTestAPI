@@ -13,9 +13,14 @@ namespace Repositories
         {
         }
 
+        public IQueryable<User> FindAllNotDeletedWithRoles()
+        {
+            return FindAll().Include(user => user.Roles).Where(user => !user.IsDeleted());
+        }
+
         public User FindById(Guid id)
         {
-            return FindByCondition(user => user.Id.Equals(id)).FirstOrDefault();
+            return FindByCondition(user => user.Id.Equals(id) && !user.IsDeleted()).FirstOrDefault();
         }
 
         public User FindByEmail(string email)

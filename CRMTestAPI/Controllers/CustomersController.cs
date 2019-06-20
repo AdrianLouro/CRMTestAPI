@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Linq;
 using ActionFilters;
-using CryptoHelper;
 using Entities.Extensions;
 using Entities.Models;
 using Entities.Models.Reduced;
 using LoggerService.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.EntityFrameworkCore;
 using Repositories.Contracts;
 
 namespace CRMTestAPI.Controllers
@@ -56,8 +52,8 @@ namespace CRMTestAPI.Controllers
         [ServiceFilter(typeof(EntityIsValidActionFilter))]
         public IActionResult Put([FromBody] CustomerProfile customer, Guid id)
         {
-            (HttpContext.Items["entity"] as Customer).Map(customer);
-            _repositories.Customer.Update(HttpContext.Items["entity"] as Customer);
+            ((Customer) HttpContext.Items["entity"]).Map(customer);
+            _repositories.Customer.Update((Customer) HttpContext.Items["entity"]);
             _repositories.Customer.Save();
             return NoContent();
         }
@@ -66,7 +62,7 @@ namespace CRMTestAPI.Controllers
         [ServiceFilter(typeof(EntityExistsActionFilter<Customer>))]
         public IActionResult Delete(Guid id)
         {
-            _repositories.Customer.Delete(HttpContext.Items["entity"] as Customer);
+            _repositories.Customer.Delete((Customer) HttpContext.Items["entity"]);
             _repositories.Customer.Save();
             return NoContent();
         }

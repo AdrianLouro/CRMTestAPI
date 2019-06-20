@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using CryptoHelper;
 using CRMTestAPI;
+using Entities.Extensions;
 using Entities.Models;
 using Entities.Models.Reduced;
 using LoggerService.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using Repositories.Contracts;
+using Security;
+using static System.DateTime;
+using static CryptoHelper.Crypto;
+using static Microsoft.IdentityModel.Tokens.SecurityAlgorithms;
 
-namespace PrematureKidsAPI.Controllers
+namespace CRMTestAPI.Controllers
 {
     public class AuthController : ControllerBase
     {
@@ -41,22 +40,21 @@ namespace PrematureKidsAPI.Controllers
 
         private bool UserDoesNotExist(Login user, User dbUser)
         {
-            return dbUser == null || (dbUser != null && !Crypto.VerifyHashedPassword(dbUser.Password, user.Password));
+            return dbUser.IsNull()
+                   || dbUser.IsDeleted()
+                   || !VerifyHashedPassword(dbUser.Password, user.Password);
         }
 
         private JwtSecurityToken GetJwtSecurityToken(User dbUser)
         {
-            var claims = dbUser.Roles.Select(role => new Claim("role", role.Type.ToLower())).ToList();
-            claims.AddRange(new List<Claim>() {new Claim("sub", dbUser.Id.ToString())});
-            return new JwtSecurityToken(
-                issuer: "http://localhost:5000",
-                audience: "http://localhost:5000",
-                claims: claims,
-                expires: DateTime.Now.AddMonths(_config.Value.JwtExpirationInMonths),
-                signingCredentials: new SigningCredentials(
-                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.Value.JwtSecretKey)),
-                    SecurityAlgorithms.HmacSha256
-                )
+            return JwtSecurityTokenFactory.GetToken(
+                "http://localhost:5000",
+                "http://localhost:5000",
+                dbUser.Id.ToString(),
+                dbUser.Roles.Select(role => role.Type),
+                Now.AddMonths(_config.Value.JwtExpirationInMonths),
+                _config.Value.JwtSecretKey,
+                HmacSha256
             );
         }
     }

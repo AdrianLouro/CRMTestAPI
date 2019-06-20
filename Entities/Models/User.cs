@@ -7,7 +7,7 @@ using Entities.Contracts;
 namespace Entities.Models
 {
     [Table("user")]
-    public class User : IEntity, IEntityModel
+    public class User : IEntity, IEntityModel, IRemoveAware
     {
         [Key]
         [Column("id")]
@@ -33,6 +33,14 @@ namespace Entities.Models
         [StringLength(100, ErrorMessage = "Surname can't be longer than 100 characters")]
         public string Surname { get; set; }
 
+        [Column("deleted_at")]
+        public DateTime? DeletedAt { get; set; }
+
         public virtual ICollection<Role> Roles { get; set; } = new List<Role>();
+
+        public bool IsDeleted()
+        {
+            return DeletedAt != null;
+        }
     }
 }

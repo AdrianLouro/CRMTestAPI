@@ -18,6 +18,7 @@
     <ProjectReference Include="..\ExceptionMiddleware\ExceptionMiddleware.csproj" />
     <ProjectReference Include="..\LoggerService\LoggerService.csproj" />
     <ProjectReference Include="..\Repositories\Repositories.csproj" />
+    <ProjectReference Include="..\Security\Security.csproj" />
   </ItemGroup>
 
   <ItemGroup>

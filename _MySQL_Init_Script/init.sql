@@ -12,6 +12,7 @@ CREATE TABLE crmtestapi.user(
 	password VARCHAR(100) NOT NULL,
 	name VARCHAR(100) NOT NULL,
 	surname VARCHAR(100) NOT NULL,
+	deleted_at DATETIME,
 	PRIMARY KEY(id)
 );
 

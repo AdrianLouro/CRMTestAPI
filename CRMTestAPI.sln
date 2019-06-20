@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "Repositorie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActionFilters", "ActionFilters\ActionFilters.csproj", "{9DD3706A-7A4F-47B9-8851-56D5FCD80558}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security", "Security\Security.csproj", "{FE0AD866-D426-4614-B513-EE88AA1F549E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{9DD3706A-7A4F-47B9-8851-56D5FCD80558}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DD3706A-7A4F-47B9-8851-56D5FCD80558}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DD3706A-7A4F-47B9-8851-56D5FCD80558}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE0AD866-D426-4614-B513-EE88AA1F549E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE0AD866-D426-4614-B513-EE88AA1F549E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE0AD866-D426-4614-B513-EE88AA1F549E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE0AD866-D426-4614-B513-EE88AA1F549E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
