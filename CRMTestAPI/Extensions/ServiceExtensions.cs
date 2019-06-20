@@ -58,8 +58,8 @@ namespace CRMTestAPI.Extensions
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = "http://localhost:5000",
-                    ValidAudience = "http://localhost:5000",
+                    ValidIssuer = config["Authentication:Issuer"],
+                    ValidAudience = config["Authentication:Audience"],
                     IssuerSigningKey =
                         new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Authentication:JwtSecretKey"]))
                 };

@@ -1,6 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using CRMTestAPI;
 using Entities.Extensions;
 using Entities.Models;
 using Entities.Models.Reduced;
@@ -48,8 +47,8 @@ namespace CRMTestAPI.Controllers
         private JwtSecurityToken GetJwtSecurityToken(User dbUser)
         {
             return JwtSecurityTokenFactory.GetToken(
-                "http://localhost:5000",
-                "http://localhost:5000",
+                _config.Value.Issuer,
+                _config.Value.Audience,
                 dbUser.Id.ToString(),
                 dbUser.Roles.Select(role => role.Type),
                 Now.AddMonths(_config.Value.JwtExpirationInMonths),
