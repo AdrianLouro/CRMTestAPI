@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Entities.Contracts;
+using Newtonsoft.Json;
 
 namespace Entities.Models
 {
@@ -26,14 +27,18 @@ namespace Entities.Models
         [StringLength(10, ErrorMessage = "Photo extension can't be longer than 10 characters")]
         public string PhotoExtension { get; set; }
 
+        [JsonIgnore]
         [Column("created_by")]
         public Guid CreatedById { get; set; }
 
+        [JsonIgnore]
         public virtual User CreatedBy { get; set; }
 
+        [JsonIgnore]
         [Column("last_updated_by")]
-        public Guid LastUpdatedById { get; set; }
+        public Guid? LastUpdatedById { get; set; }
 
+        [JsonIgnore]
         public virtual User LastUpdatedBy { get; set; }
     }
 }

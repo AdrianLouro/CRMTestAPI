@@ -7,6 +7,7 @@ using LoggerService.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repositories.Contracts;
+using static System.Security.Claims.ClaimTypes;
 
 namespace CRMTestAPI.Controllers
 {
@@ -26,14 +27,14 @@ namespace CRMTestAPI.Controllers
         [HttpGet, Authorize]
         public IActionResult GetAll()
         {
-            return Ok(_repositories.Customer.FindAll()); //TODO: SET PHOTO URL, INCLUDE USERS
+            return Ok(_repositories.Customer.FindAll()); //TODO: SET PHOTO URL
         }
 
         [HttpGet("{id}", Name = "GetCustomerById"), Authorize]
         [ServiceFilter(typeof(EntityExistsActionFilter<Customer>))]
         public IActionResult GetById(Guid id)
         {
-            return Ok(HttpContext.Items["entity"]); //TODO: SET PHOTO URL, USERS
+            return Ok(HttpContext.Items["entity"]); //TODO: SET PHOTO URL
         }
 
         [HttpPost, Authorize]
@@ -42,6 +43,7 @@ namespace CRMTestAPI.Controllers
         {
             Customer customer = new Customer();
             customer.Map(customerProfile);
+            customer.CreatedById = Guid.Parse(User.FindFirst(NameIdentifier).Value);
             _repositories.Customer.Create(customer); //TODO: SET CREATED_BY
             _repositories.Customer.Save();
             return CreatedAtRoute("GetCustomerById", new {id = customer.Id}, customer);
@@ -52,8 +54,10 @@ namespace CRMTestAPI.Controllers
         [ServiceFilter(typeof(EntityIsValidActionFilter))]
         public IActionResult Put([FromBody] CustomerProfile customer, Guid id)
         {
-            ((Customer) HttpContext.Items["entity"]).Map(customer);
-            _repositories.Customer.Update((Customer) HttpContext.Items["entity"]);
+            Customer dbCustomer = ((Customer) HttpContext.Items["entity"]);
+            dbCustomer.Map(customer);
+            dbCustomer.LastUpdatedById = Guid.Parse(User.FindFirst(NameIdentifier).Value);
+            _repositories.Customer.Update(dbCustomer);
             _repositories.Customer.Save();
             return NoContent();
         }
