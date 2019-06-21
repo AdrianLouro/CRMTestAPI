@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Repositories;
 using ActionFilters;
+using FileSystemService;
+using FileSystemService.Contracts;
 using LoggerService.Contracts;
 using Repositories.Contracts;
 
@@ -72,6 +74,11 @@ namespace CRMTestAPI.Extensions
             services.AddScoped<EntityExistsActionFilter<User>>();
             services.AddScoped<EntityExistsActionFilter<Role>>();
             services.AddScoped<EntityExistsActionFilter<Customer>>();
+        }
+
+        public static void ConfigureFileSystemService(this IServiceCollection services)
+        {
+            services.AddScoped<IImageWriter, ImageWriter>();
         }
     }
 }

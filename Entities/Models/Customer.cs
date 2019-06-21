@@ -23,9 +23,10 @@ namespace Entities.Models
         [StringLength(100, ErrorMessage = "Surname can't be longer than 100 characters")]
         public string Surname { get; set; }
 
-        [Column("photo_extension")]
-        [StringLength(10, ErrorMessage = "Photo extension can't be longer than 10 characters")]
-        public string PhotoExtension { get; set; }
+        [JsonIgnore]
+        [Column("photo_name")]
+        [StringLength(50, ErrorMessage = "Photo name can't be longer than 50 characters")]
+        public string PhotoName { get; set; }
 
         [JsonIgnore]
         [Column("created_by")]

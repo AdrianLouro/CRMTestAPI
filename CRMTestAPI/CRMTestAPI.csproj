@@ -16,6 +16,7 @@
     <ProjectReference Include="..\ActionFilters\ActionFilters.csproj" />
     <ProjectReference Include="..\Entities\Entities.csproj" />
     <ProjectReference Include="..\ExceptionMiddleware\ExceptionMiddleware.csproj" />
+    <ProjectReference Include="..\FileSystemService\FileSystemService.csproj" />
     <ProjectReference Include="..\LoggerService\LoggerService.csproj" />
     <ProjectReference Include="..\Repositories\Repositories.csproj" />
     <ProjectReference Include="..\Security\Security.csproj" />

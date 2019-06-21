@@ -45,7 +45,7 @@ namespace CRMTestAPI.Controllers
             if (!_repositories.Role.FindByUserIdAndType(role.UserId, role.Type).IsNull())
             {
                 var error = new ModelStateDictionary();
-                error.AddModelError("Type", "Already found role type for given user.");
+                error.AddModelError("Type", "Already found role type for the given user.");
                 return Conflict(error);
             }
 

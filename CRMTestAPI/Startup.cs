@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using NLog;
 using static System.String;
 
@@ -32,6 +33,7 @@ namespace CRMTestAPI
             services.ConfigureRepositoryWrapper();
             services.ConfigureAuthenticationService(Configuration);
             services.ConfigureActionFilters();
+            services.ConfigureFileSystemService();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -53,6 +55,15 @@ namespace CRMTestAPI
             {
                 ForwardedHeaders = ForwardedHeaders.All
             });
+
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider =
+            //        new PhysicalFileProvider(
+            //            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads")
+            //        ),
+            //    RequestPath = "/uploads"
+            //});
 
             app.UseAuthentication();
             app.UseMiddleware<ExceptionMiddleware.ExceptionMiddleware>();
