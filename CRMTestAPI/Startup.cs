@@ -58,7 +58,7 @@ namespace CRMTestAPI
 
             app.Use(async (context, next) =>
             {
-                context.Response.Headers.Add("X-XSS-Protection", "1");
+                context.Response.Headers.Add("X-XSS-Protection", "1; mode=block");
                 await next();
             });
             
