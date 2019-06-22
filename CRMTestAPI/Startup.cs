@@ -56,6 +56,12 @@ namespace CRMTestAPI
                 ForwardedHeaders = ForwardedHeaders.All
             });
 
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("X-XSS-Protection", "1");
+                await next();
+            });
+            
             app.UseAuthentication();
             app.UseMiddleware<ExceptionMiddleware.ExceptionMiddleware>();
             app.UseHttpsRedirection();
