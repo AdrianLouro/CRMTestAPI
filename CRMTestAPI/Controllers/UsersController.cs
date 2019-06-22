@@ -14,6 +14,7 @@ using static CryptoHelper.Crypto;
 namespace CRMTestAPI.Controllers
 {
     [Route("users")]
+    [Authorize(Roles = "admin", Policy = "NotDeleted")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -26,13 +27,13 @@ namespace CRMTestAPI.Controllers
             _repositories = repositories;
         }
 
-        [HttpGet, Authorize(Roles = "admin")]
+        [HttpGet]
         public IActionResult GetAll()
         {
             return Ok(_repositories.User.FindAllNotDeletedWithRoles().Select(user => user.ToReducedUser()));
         }
 
-        [HttpGet("{id}", Name = "GetUserById"), Authorize(Roles = "admin")]
+        [HttpGet("{id}", Name = "GetUserById")]
         [ServiceFilter(typeof(EntityExistsActionFilter<User>))]
         public IActionResult GetById(Guid id)
         {
@@ -40,7 +41,7 @@ namespace CRMTestAPI.Controllers
             return Ok(_repositories.User.FindWithRolesById(id).ToReducedUser());
         }
 
-        [HttpPost, Authorize(Roles = "admin")]
+        [HttpPost]
         [ServiceFilter(typeof(EntityIsValidActionFilter))]
         public IActionResult Post([FromBody] User user)
         {
@@ -58,7 +59,7 @@ namespace CRMTestAPI.Controllers
             return CreatedAtRoute("GetUserById", new {id = user.Id}, user.ToReducedUser());
         }
 
-        [HttpPut("{id}"), Authorize(Roles = "admin")]
+        [HttpPut("{id}")]
         [ServiceFilter(typeof(EntityExistsActionFilter<User>))]
         [ServiceFilter(typeof(EntityIsValidActionFilter))]
         public IActionResult Put([FromBody] UserProfile user, Guid id)
@@ -69,7 +70,7 @@ namespace CRMTestAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}"), Authorize(Roles = "admin")]
+        [HttpDelete("{id}")]
         [ServiceFilter(typeof(EntityExistsActionFilter<User>))]
         public IActionResult Delete(Guid id)
         {

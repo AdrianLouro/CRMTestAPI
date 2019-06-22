@@ -11,6 +11,7 @@ using Repositories.Contracts;
 namespace CRMTestAPI.Controllers
 {
     [Route("roles")]
+    [Authorize(Roles = "admin", Policy = "NotDeleted")]
     [ApiController]
     public class RolesController : ControllerBase
     {
@@ -24,14 +25,14 @@ namespace CRMTestAPI.Controllers
         }
 
 
-        [HttpGet("{id}", Name = "GetRoleById"), Authorize(Roles = "admin")]
+        [HttpGet("{id}", Name = "GetRoleById")]
         [ServiceFilter(typeof(EntityExistsActionFilter<Role>))]
         public IActionResult GetById(Guid id)
         {
             return Ok(HttpContext.Items["entity"]);
         }
 
-        [HttpPost, Authorize(Roles = "admin")]
+        [HttpPost]
         [ServiceFilter(typeof(EntityIsValidActionFilter))]
         public IActionResult Post([FromBody] Role role)
         {
@@ -54,7 +55,7 @@ namespace CRMTestAPI.Controllers
             return CreatedAtRoute("GetRoleById", new {id = role.Id}, role);
         }
 
-        [HttpDelete("{id}"), Authorize(Roles = "admin")]
+        [HttpDelete("{id}")]
         [ServiceFilter(typeof(EntityExistsActionFilter<Role>))]
         public IActionResult Delete(Guid id)
         {

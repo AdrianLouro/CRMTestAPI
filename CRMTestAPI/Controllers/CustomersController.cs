@@ -19,6 +19,7 @@ using static Microsoft.AspNetCore.Http.StatusCodes;
 namespace CRMTestAPI.Controllers
 {
     [Route("customers")]
+    [Authorize(Policy="NotDeleted")]
     [ApiController]
     public class CustomersController : ControllerBase
     {
@@ -33,20 +34,20 @@ namespace CRMTestAPI.Controllers
             _imageWriter = imageWriter;
         }
 
-        [HttpGet, Authorize]
+        [HttpGet]
         public IActionResult GetAll()
         {
             return Ok(_repositories.Customer.FindAll());
         }
 
-        [HttpGet("{id}", Name = "GetCustomerById"), Authorize]
+        [HttpGet("{id}", Name = "GetCustomerById")]
         [ServiceFilter(typeof(EntityExistsActionFilter<Customer>))]
         public IActionResult GetById(Guid id)
         {
             return Ok(HttpContext.Items["entity"]);
         }
 
-        [HttpPost, Authorize]
+        [HttpPost]
         [ServiceFilter(typeof(EntityIsValidActionFilter))]
         public IActionResult Post([FromBody] CustomerProfile customerProfile)
         {
@@ -58,7 +59,7 @@ namespace CRMTestAPI.Controllers
             return CreatedAtRoute("GetCustomerById", new {id = customer.Id}, customer);
         }
 
-        [HttpPut("{id}"), Authorize]
+        [HttpPut("{id}")]
         [ServiceFilter(typeof(EntityExistsActionFilter<Customer>))]
         [ServiceFilter(typeof(EntityIsValidActionFilter))]
         public IActionResult Put([FromBody] CustomerProfile customer, Guid id)
@@ -71,7 +72,7 @@ namespace CRMTestAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}"), Authorize]
+        [HttpDelete("{id}")]
         [ServiceFilter(typeof(EntityExistsActionFilter<Customer>))]
         public IActionResult Delete(Guid id)
         {
@@ -80,7 +81,7 @@ namespace CRMTestAPI.Controllers
             return NoContent();
         }
 
-        [HttpPost("{id}/photos"), Authorize]
+        [HttpPost("{id}/photos")]
         [ServiceFilter(typeof(EntityExistsActionFilter<Customer>))]
         public async Task<IActionResult> UploadPhoto(Guid id, [FromForm] IFormFile file)
         {
@@ -96,7 +97,7 @@ namespace CRMTestAPI.Controllers
             return NoContent();
         }
 
-        [HttpGet("{id}/photo"), Authorize]
+        [HttpGet("{id}/photo")]
         [ServiceFilter(typeof(EntityExistsActionFilter<Customer>))]
         public IActionResult GetPhoto(Guid id)
         {

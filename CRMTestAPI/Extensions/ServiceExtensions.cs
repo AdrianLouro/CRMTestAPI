@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net;
+using System.Text;
 using Entities;
 using Entities.Models;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,15 +10,28 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Repositories;
 using ActionFilters;
+using CRMTestAPI.Security;
 using FileSystemService;
 using FileSystemService.Contracts;
 using LoggerService.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Repositories.Contracts;
 
 namespace CRMTestAPI.Extensions
 {
     public static class ServiceExtensions
     {
+        public static void ConfigureAuthorization(this IServiceCollection services)
+        {
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("NotDeleted",
+                    policy => policy.Requirements.Add(new NotDeletedRequirement()));
+            });
+
+            services.AddScoped<IAuthorizationHandler, NotDeletedAuthorizationHandler>();
+        }
+
         public static void ConfigureCors(this IServiceCollection services)
         {
             services.AddCors(options =>
