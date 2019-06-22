@@ -103,7 +103,7 @@ namespace CRMTestAPI.Controllers
             return NoContent();
         }
 
-        [HttpGet("{id}/photo")]
+        [HttpGet("{id}/photos")]
         [ServiceFilter(typeof(EntityExistsActionFilter<Customer>))]
         public IActionResult GetPhoto(Guid id)
         {

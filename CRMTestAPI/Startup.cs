@@ -34,6 +34,7 @@ namespace CRMTestAPI
             services.ConfigureAuthenticationService(Configuration);
             services.ConfigureActionFilters();
             services.ConfigureFileSystemService(Configuration);
+            services.ConfigureSwagger();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -43,6 +44,12 @@ namespace CRMTestAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "CRM Test API V1");
+                });
+
             }
             else
             {

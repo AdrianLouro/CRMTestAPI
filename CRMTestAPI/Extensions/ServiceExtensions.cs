@@ -16,6 +16,7 @@ using FileSystemService.Contracts;
 using LoggerService.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Repositories.Contracts;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace CRMTestAPI.Extensions
 {
@@ -94,6 +95,14 @@ namespace CRMTestAPI.Extensions
         public static void ConfigureFileSystemService(this IServiceCollection services, IConfiguration config)
         {
             services.AddScoped<IImageWriter>( imageWriter => new ImageWriter(config["Directories:Uploads"]));
+        }
+
+        public static void ConfigureSwagger(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "CRM Test API", Version = "v1" });
+            });
         }
     }
 }
