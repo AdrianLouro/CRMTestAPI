@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using CRMTestAPI.Configuration;
 using Entities.Extensions;
 using Entities.Models;
 using Entities.Models.Reduced;
@@ -16,11 +17,11 @@ namespace CRMTestAPI.Controllers
 {
     public class AuthController : ControllerBase
     {
-        private IOptions<AppConfig> _config;
+        private IOptions<AuthConfig> _config;
         private ILoggerManager _logger;
         private IRepositoryWrapper _repository;
 
-        public AuthController(ILoggerManager logger, IRepositoryWrapper repository, IOptions<AppConfig> config)
+        public AuthController(ILoggerManager logger, IRepositoryWrapper repository, IOptions<AuthConfig> config)
         {
             _logger = logger;
             _repository = repository;

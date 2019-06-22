@@ -41,5 +41,8 @@ namespace Entities.Models
 
         [JsonIgnore]
         public virtual User LastUpdatedBy { get; set; }
+
+        [NotMapped]
+        public String PhotoPath { get; set; }
     }
 }

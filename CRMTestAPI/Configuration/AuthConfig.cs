@@ -1,6 +1,6 @@
-﻿namespace CRMTestAPI
+﻿namespace CRMTestAPI.Configuration
 {
-    public class AppConfig
+    public class AuthConfig
     {
         public string JwtSecretKey { get; set; }
 
@@ -9,5 +9,7 @@
         public string Issuer { get; set; }
 
         public string Audience { get; set; }
+
+        private string UploadsDirectory { get; set; }
     }
 }

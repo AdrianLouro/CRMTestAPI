@@ -3,7 +3,6 @@ using System.IO;
 using System.Threading.Tasks;
 using FileSystemService.Contracts;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using static System.IO.Directory;
 using static System.IO.FileMode;
 using static System.IO.Path;
@@ -12,6 +11,13 @@ namespace FileSystemService
 {
     public class ImageWriter : IImageWriter
     {
+        private string _relativePath;
+
+        public ImageWriter(string relativePath)
+        {
+            _relativePath = relativePath;
+        }
+
         public async Task<string> Write(IFormFile file)
         {
             return await WriteFile(file);
@@ -24,7 +30,7 @@ namespace FileSystemService
             try
             {
                 using (var stream = new FileStream(
-                        Combine(GetCurrentDirectory(), "wwwroot", "uploads", "customer_photos", fileName),
+                        Combine(GetCurrentDirectory(), _relativePath, fileName),
                         Create
                     )
                 )

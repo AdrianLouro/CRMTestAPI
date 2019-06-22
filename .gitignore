@@ -262,5 +262,5 @@ __pycache__/
 
 # My files
 CRMTestAPI/logs/
-CRMTestAPI/wwwroot/uploads/customer_photos/*
-!CRMTestAPI/wwwroot/uploads/customer_photos/.gitkeep
+CRMTestAPI/wwwroot/uploads/*
+!CRMTestAPI/wwwroot/uploads/.gitkeep

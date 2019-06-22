@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Text;
+﻿using System.Text;
 using Entities;
 using Entities.Models;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Repositories;
 using ActionFilters;
+using CRMTestAPI.Configuration;
 using CRMTestAPI.Security;
 using FileSystemService;
 using FileSystemService.Contracts;
@@ -46,7 +46,8 @@ namespace CRMTestAPI.Extensions
 
         public static void ConfigureConfig(this IServiceCollection services, IConfiguration config)
         {
-            services.Configure<AppConfig>(config.GetSection("authentication"));
+            services.Configure<AuthConfig>(config.GetSection("authentication"));
+            services.Configure<DirectoryConfig>(config.GetSection("directories"));
         }
 
         public static void ConfigureLoggerService(this IServiceCollection services)
@@ -90,9 +91,9 @@ namespace CRMTestAPI.Extensions
             services.AddScoped<EntityExistsActionFilter<Customer>>();
         }
 
-        public static void ConfigureFileSystemService(this IServiceCollection services)
+        public static void ConfigureFileSystemService(this IServiceCollection services, IConfiguration config)
         {
-            services.AddScoped<IImageWriter, ImageWriter>();
+            services.AddScoped<IImageWriter>( imageWriter => new ImageWriter(config["Directories:Uploads"]));
         }
     }
 }

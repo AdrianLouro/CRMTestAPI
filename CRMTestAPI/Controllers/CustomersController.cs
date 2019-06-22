@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ActionFilters;
+using CRMTestAPI.Configuration;
 using Entities.Extensions;
 using Entities.Models;
 using Entities.Models.Reduced;
@@ -9,6 +10,7 @@ using LoggerService.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Repositories.Contracts;
 using static System.IO.Directory;
 using static System.IO.Path;
@@ -19,19 +21,21 @@ using static Microsoft.AspNetCore.Http.StatusCodes;
 namespace CRMTestAPI.Controllers
 {
     [Route("customers")]
-    [Authorize(Policy="NotDeleted")]
+    [Authorize(Policy = "NotDeleted")]
     [ApiController]
     public class CustomersController : ControllerBase
     {
         private ILoggerManager _logger;
         private IRepositoryWrapper _repositories;
         private IImageWriter _imageWriter;
+        private IOptions<DirectoryConfig> _config;
 
-        public CustomersController(ILoggerManager logger, IRepositoryWrapper repositories, IImageWriter imageWriter)
+        public CustomersController(ILoggerManager logger, IRepositoryWrapper repositories, IImageWriter imageWriter, IOptions<DirectoryConfig> config)
         {
             _logger = logger;
             _repositories = repositories;
             _imageWriter = imageWriter;
+            _config = config;
         }
 
         [HttpGet]
@@ -44,7 +48,9 @@ namespace CRMTestAPI.Controllers
         [ServiceFilter(typeof(EntityExistsActionFilter<Customer>))]
         public IActionResult GetById(Guid id)
         {
-            return Ok(HttpContext.Items["entity"]);
+            Customer customer = (Customer) HttpContext.Items["entity"];
+            customer.PhotoPath = Url.Action("GetPhoto", "Customers", new { id = customer.Id });
+            return Ok(customer);
         }
 
         [HttpPost]
@@ -106,7 +112,7 @@ namespace CRMTestAPI.Controllers
                 return NotFound("Could not find a photo for the given customer.");
             }
 
-            var file = Combine(GetCurrentDirectory(), "wwwroot", "uploads", "customer_photos",
+            var file = Combine(GetCurrentDirectory(), _config.Value.Uploads,
                 ((Customer) HttpContext.Items["entity"]).PhotoName);
             return PhysicalFile(file, MimeTypes[GetExtension(file)]);
         }
