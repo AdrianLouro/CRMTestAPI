@@ -19,7 +19,8 @@ namespace Tests.Entities.Models
             {
                 Id = Guid.NewGuid()
             };
-            
+
+            role.Map(newRole);
 
             Assert.NotEqual(newRole.Id, role.Id);
         }
@@ -31,20 +32,17 @@ namespace Tests.Entities.Models
             {
                 Id = Guid.NewGuid(),
                 Type = "admin",
-                User = new User()
             };
- 
+
             Role newRole = new Role
             {
                 Id = Guid.NewGuid(),
                 Type = "not_an_admin",
-                User = new User()
             };
 
             role.Map(newRole);
 
             Assert.Equal(newRole.Type, role.Type);
-            Assert.NotSame(newRole.User, role.User);
         }
     }
 }

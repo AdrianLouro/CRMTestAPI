@@ -30,19 +30,20 @@ CREATE TABLE crmtestapi.customer(
 	id VARCHAR(36),
 	name VARCHAR(100) NOT NULL,
 	surname VARCHAR(100) NOT NULL,
-	photo_name VARCHAR(50),
+	photo_name VARCHAR(50) UNIQUE,
 	created_by VARCHAR(36) NOT NULL,
 	last_updated_by VARCHAR(36),
 	PRIMARY KEY(id),
-	FOREIGN KEY(created_by) REFERENCES user(id) ON DELETE CASCADE, -- ¿ON DELETE?
-	FOREIGN KEY(last_updated_by) REFERENCES user(id) ON DELETE CASCADE -- ¿ON DELETE?
+	FOREIGN KEY(created_by) REFERENCES user(id),
+	FOREIGN KEY(last_updated_by) REFERENCES user(id)
 );
 
 -- -----------------------------------------------------------------
 
-INSERT INTO `crmtestapi`.`user` (`id`, `email`, `password`, `name`, `surname`) VALUES 
-	('11111111-1111-1111-1111-111111111111', 'admin@admin.es', 'AQAAAAEAACcQAAAAEHkiukovlvPkbNFKa8DjhmjuIXaz4GXMm51nadhhKIqTuBcErHzqB7wv6EoAi6CvjQ==', 'John', 'Admin Doe'),
-	('22222222-2222-2222-2222-222222222222', 'user@user.es', 'AQAAAAEAACcQAAAAEHkiukovlvPkbNFKa8DjhmjuIXaz4GXMm51nadhhKIqTuBcErHzqB7wv6EoAi6CvjQ==', 'John', 'Doe');
+INSERT INTO `crmtestapi`.`user` (`id`, `email`, `password`, `name`, `surname`, `deleted_at`) VALUES 
+	('11111111-1111-1111-1111-111111111111', 'admin@admin.es', 'AQAAAAEAACcQAAAAEHkiukovlvPkbNFKa8DjhmjuIXaz4GXMm51nadhhKIqTuBcErHzqB7wv6EoAi6CvjQ==', 'John', 'Admin Doe', NULL),
+	('22222222-2222-2222-2222-222222222222', 'user@user.es', 'AQAAAAEAACcQAAAAEHkiukovlvPkbNFKa8DjhmjuIXaz4GXMm51nadhhKIqTuBcErHzqB7wv6EoAi6CvjQ==', 'John', 'Doe', NULL),
+	('33333333-3333-3333-3333-333333333333', 'deleted@user.es', 'AQAAAAEAACcQAAAAEHkiukovlvPkbNFKa8DjhmjuIXaz4GXMm51nadhhKIqTuBcErHzqB7wv6EoAi6CvjQ==', 'John', 'Deleted Doe', '2000-01-01 00:00:00');
 
 INSERT INTO `crmtestapi`.`role` (`id`, `type`, `user`) VALUES 
 	('11111111-1111-1111-1111-111111111111', 'admin', '11111111-1111-1111-1111-111111111111');

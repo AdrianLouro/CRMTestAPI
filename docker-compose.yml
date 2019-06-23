@@ -21,6 +21,7 @@ services:
             context: .
         environment:
             - ASPNETCORE_ENVIRONMENT=Production
+            # - ASPNETCORE_ENVIRONMENT=Development
             - ASPNETCORE_URLS=https://+
             # - ASPNETCORE_URLS=https://+;http://+
             - ASPNETCORE_HTTPS_PORT=8081

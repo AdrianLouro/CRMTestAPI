@@ -62,6 +62,14 @@ namespace Tests.Repositories
             Assert.Equal(Guid.Parse("11111111-1111-1111-1111-111111111111"), user.Roles.First().Id);
         }
 
+        [Fact]
+        public void does_not_fetch_deleted_users()
+        {
+            var users = _userRepository.FindAllNotDeletedWithRoles();
+            Assert.Single(users);
+            Assert.Equal(Guid.Parse("11111111-1111-1111-1111-111111111111"), users.First().Id);
+        }
+
         private void SetUpUsers()
         {
             _users = new List<User>()
@@ -88,7 +96,8 @@ namespace Tests.Repositories
                     Email = "user@user.es",
                     Password = "password",
                     Name = "John",
-                    Surname = "Doe"
+                    Surname = "Doe",
+                    DeletedAt = DateTime.Now
                 }
             }.AsQueryable();
         }

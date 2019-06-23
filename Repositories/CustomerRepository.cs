@@ -1,8 +1,5 @@
-﻿using System;
-using System.Linq;
-using Entities;
+﻿using Entities;
 using Entities.Models;
-using Microsoft.EntityFrameworkCore;
 using Repositories.Contracts;
 
 namespace Repositories

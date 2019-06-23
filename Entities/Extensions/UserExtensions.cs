@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using Entities.Models;
+﻿using Entities.Models;
 using Entities.Models.Reduced;
 
 namespace Entities.Extensions

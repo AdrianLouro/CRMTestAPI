@@ -37,7 +37,6 @@ namespace CRMTestAPI.Controllers
         [ServiceFilter(typeof(EntityExistsActionFilter<User>))]
         public IActionResult GetById(Guid id)
         {
-            //return Ok((User) (HttpContext.Items["entity"]).ToReducedUser());
             return Ok(_repositories.User.FindWithRolesById(id).ToReducedUser());
         }
 
