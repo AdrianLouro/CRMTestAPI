@@ -264,3 +264,5 @@ __pycache__/
 CRMTestAPI/logs/
 CRMTestAPI/wwwroot/uploads/*
 !CRMTestAPI/wwwroot/uploads/.gitkeep
+Temp/*
+!Temp/.gitkeep

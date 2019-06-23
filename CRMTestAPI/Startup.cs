@@ -45,11 +45,7 @@ namespace CRMTestAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "CRM Test API V1");
-                });
-
+                app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "CRM Test API V1"); });
             }
             else
             {
@@ -68,7 +64,7 @@ namespace CRMTestAPI
                 context.Response.Headers.Add("X-XSS-Protection", "1; mode=block");
                 await next();
             });
-            
+
             app.UseAuthentication();
             app.UseMiddleware<ExceptionMiddleware.ExceptionMiddleware>();
             app.UseHttpsRedirection();

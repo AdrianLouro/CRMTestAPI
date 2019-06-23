@@ -1,0 +1,33 @@
+version: "3.0"
+ 
+services:
+    db:
+        image: mysql:5.7
+        environment:
+            MYSQL_RANDOM_ROOT_PASSWORD: 1
+            MYSQL_DATABASE: crmtestapi
+            MYSQL_USER: crmtestapiuser
+            MYSQL_PASSWORD: crmtestapiuserpassword
+        volumes:
+            - dbdata:/var/lib/mysql
+            - ./_MySQL_Init_Script:/docker-entrypoint-initdb.d
+        restart: always
+
+    crmtestapi:
+        depends_on:
+            - db
+        image: theam/crmtestapi
+        build:
+            context: .
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Production
+            - ASPNETCORE_URLS=https://+
+            # - ASPNETCORE_URLS=https://+;http://+
+            - ASPNETCORE_HTTPS_PORT=8081
+            - Kestrel__Certificates__Default__Path=/root/.dotnet/https/cert-aspnetcore.pfx
+            - Kestrel__Certificates__Default__Password=password
+        ports:
+            - "8081:443"
+            # - "8080:80"
+volumes:
+    dbdata:

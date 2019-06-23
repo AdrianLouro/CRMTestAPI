@@ -1,0 +1,30 @@
+version: '3.1'
+ 
+services:
+    db:
+        image: mysql:5.7
+        environment:
+            MYSQL_RANDOM_ROOT_PASSWORD: 1
+            MYSQL_DATABASE: crmtestapi
+            MYSQL_USER: crmtestapiuser
+            MYSQL_PASSWORD: crmtestapiuserpassword
+        volumes:
+            - dbdata:/var/lib/mysql
+            - ./_MySQL_Init_Script:/docker-entrypoint-initdb.d
+        restart: always
+
+    crmtestapi:
+        depends_on:
+            - db
+        image: theam/crmtestapi
+    
+    integration:
+        depends_on:
+            - crmtestapi
+        image: theam/crmtestapi:test
+        build:
+            context: .
+            dockerfile: Dockerfile.Integration
+
+volumes:
+    dbdata:

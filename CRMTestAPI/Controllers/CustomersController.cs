@@ -30,7 +30,8 @@ namespace CRMTestAPI.Controllers
         private IImageWriter _imageWriter;
         private IOptions<DirectoryConfig> _config;
 
-        public CustomersController(ILoggerManager logger, IRepositoryWrapper repositories, IImageWriter imageWriter, IOptions<DirectoryConfig> config)
+        public CustomersController(ILoggerManager logger, IRepositoryWrapper repositories, IImageWriter imageWriter,
+            IOptions<DirectoryConfig> config)
         {
             _logger = logger;
             _repositories = repositories;
@@ -49,7 +50,7 @@ namespace CRMTestAPI.Controllers
         public IActionResult GetById(Guid id)
         {
             Customer customer = (Customer) HttpContext.Items["entity"];
-            customer.PhotoPath = Url.Action("GetPhoto", "Customers", new { id = customer.Id });
+            customer.PhotoPath = Url.Action("GetPhoto", "Customers", new {id = customer.Id});
             return Ok(customer);
         }
 
@@ -107,13 +108,15 @@ namespace CRMTestAPI.Controllers
         [ServiceFilter(typeof(EntityExistsActionFilter<Customer>))]
         public IActionResult GetPhoto(Guid id)
         {
-            if (((Customer) HttpContext.Items["entity"]).PhotoName == null)
+            var file = Combine(GetCurrentDirectory(), _config.Value.Uploads,
+                ((Customer) HttpContext.Items["entity"]).PhotoName);
+
+            if (((Customer) HttpContext.Items["entity"]).PhotoName == null
+                || !System.IO.File.Exists(file))
             {
                 return NotFound("Could not find a photo for the given customer.");
             }
 
-            var file = Combine(GetCurrentDirectory(), _config.Value.Uploads,
-                ((Customer) HttpContext.Items["entity"]).PhotoName);
             return PhysicalFile(file, MimeTypes[GetExtension(file)]);
         }
     }

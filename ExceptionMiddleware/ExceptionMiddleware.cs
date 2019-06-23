@@ -27,6 +27,7 @@ namespace ExceptionMiddleware
             catch (Exception ex)
             {
                 _logger.LogError($"Something went wrong: {ex}");
+                Console.Error.WriteLine(ex);
                 await HandleExceptionAsync(httpContext, ex);
             }
         }
